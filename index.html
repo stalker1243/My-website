@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="intro">
+    <h2>Сравните комплектующие для вашего ПК</h2>
+    <p>Выберите от 2 до 5 компонентов для сравнения характеристик и цен</p>
+</section>
+
+{% if error %}
+<div class="error-message">
+    <p>{{ error }}</p>
+</div>
+{% endif %}
+
+<form action="{{ url_for('compare') }}" method="post">
+    <div class="components-grid">
+        <!-- Видеокарты -->
+        <div class="category">
+            <h3>Видеокарты</h3>
+            {% for name, details in components.gpu.items() %}
+            <div class="component-item">
+                <input type="checkbox" id="gpu_{{ name|replace(' ', '_') }}" name="gpu" value="{{ name }}">
+                <label for="gpu_{{ name|replace(' ', '_') }}">
+                    <span class="brand">{{ details.brand }}</span>
+                    <span class="model">{{ details.model }}</span>
+                    <span class="spec">VRAM: {{ details.vram }}GB {{ details.memory_type }}</span>
+                    <span class="spec">Шина: {{ details.bus_width }}bit</span>
+                    <span class="spec">Год: {{ details.release_year }}</span>
+                    <span class="price">{{ details.price }} ₽</span>
+                </label>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Процессоры -->
+        <div class="category">
+            <h3>Процессоры</h3>
+            {% for name, details in components.cpu.items() %}
+            <div class="component-item">
+                <input type="checkbox" id="cpu_{{ name|replace(' ', '_') }}" name="cpu" value="{{ name }}">
+                <label for="cpu_{{ name|replace(' ', '_') }}">
+                    <span class="brand">{{ details.brand }}</span>
+                    <span class="model">{{ details.model }}</span>
+                    <span class="spec">Ядра: {{ details.cores }}, Потоки: {{ details.threads }}</span>
+                    <span class="spec">Частота: {{ details.frequency }} GHz</span>
+                    <span class="spec">Сокет: {{ details.socket }}</span>
+                    <span class="spec">Год: {{ details.release_year }}</span>
+                    <span class="price">{{ details.price }} ₽</span>
+                </label>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Оперативная память -->
+        <div class="category">
+            <h3>Оперативная память</h3>
+            {% for name, details in components.ram.items() %}
+            <div class="component-item">
+                <input type="checkbox" id="ram_{{ name|replace(' ', '_') }}" name="ram" value="{{ name }}">
+                <label for="ram_{{ name|replace(' ', '_') }}">
+                    <span class="brand">{{ details.brand }}</span>
+                    <span class="model">{{ details.model }}</span>
+                    <span class="spec">Объем: {{ details.size }}GB {{ details.type }}</span>
+                    <span class="spec">Частота: {{ details.frequency }} MHz</span>
+                    <span class="spec">Тайминги: {{ details.timing }}</span>
+                    <span class="spec">Год: {{ details.release_year }}</span>
+                    <span class="price">{{ details.price }} ₽</span>
+                </label>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Материнские платы -->
+        <div class="category">
+            <h3>Материнские платы</h3>
+            {% for name, details in components.motherboard.items() %}
+            <div class="component-item">
+                <input type="checkbox" id="motherboard_{{ name|replace(' ', '_') }}" name="motherboard" value="{{ name }}">
+                <label for="motherboard_{{ name|replace(' ', '_') }}">
+                    <span class="brand">{{ details.brand }}</span>
+                    <span class="model">{{ details.model }}</span>
+                    <span class="spec">Сокет: {{ details.socket }}</span>
+                    <span class="spec">Чипсет: {{ details.chipset }}</span>
+                    <span class="spec">Память: {{ details.memory_type }}</span>
+                    <span class="spec">Год: {{ details.release_year }}</span>
+                    <span class="price">{{ details.price }} ₽</span>
+                </label>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- SSD накопители -->
+        <div class="category">
+            <h3>SSD накопители</h3>
+            {% for name, details in components.ssd.items() %}
+            <div class="component-item">
+                <input type="checkbox" id="ssd_{{ name|replace(' ', '_') }}" name="ssd" value="{{ name }}">
+                <label for="ssd_{{ name|replace(' ', '_') }}">
+                    <span class="brand">{{ details.brand }}</span>
+                    <span class="model">{{ details.model }}</span>
+                    <span class="spec">Объем: {{ details.capacity }}GB</span>
+                    <span class="spec">Тип: {{ details.type }}</span>
+                    <span class="spec">Скорость: {{ details.read_speed }}/{{ details.write_speed }} MB/s</span>
+                    <span class="spec">Год: {{ details.release_year }}</span>
+                    <span class="price">{{ details.price }} ₽</span>
+                </label>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <button type="submit" class="compare-btn">Сравнить выбранное</button>
+</form>
+{% endblock %}
